@@ -1,0 +1,17 @@
+<h1>Buyer Users</h1>
+<div class="my-5 col-md-12">
+  <shared-search
+  placeholderText="Search Users"
+  (searched)="filterBySearch($event)"
+></shared-search>
+</div>
+
+<app-user-list
+          *ngIf="user$ | async; let users"
+          [users]="users"
+          [columns]="columns"
+          [sortBy]="sortBy"
+          (updatedSort)="sortOrders($event)"
+          (changedPage)="changePage($event)"
+        >
+        </app-user-list>

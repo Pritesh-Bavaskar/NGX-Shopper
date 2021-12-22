@@ -7,6 +7,7 @@ import { AddressListComponent } from '@app-buyer/profile/containers/address-list
 import { MeUpdateComponent } from '@app-buyer/profile/containers/me-update/me-update.component';
 import { PaymentListComponent } from '@app-buyer/profile/containers/payment-list/payment-list.component';
 import { OrderModule } from '@app-buyer/order/order.module';
+import { UserTableComponent } from './containers/user-table/user-table.component';
 
 export function LoadOrderChildren() {
   return OrderModule;
@@ -22,6 +23,7 @@ const routes: Routes = [
       { path: 'addresses', component: AddressListComponent },
       { path: 'payment-methods', component: PaymentListComponent },
       { path: 'orders', loadChildren: '../order/order.module#OrderModule' },
+      { path: 'users', component:UserTableComponent },
     ],
   },
 ];

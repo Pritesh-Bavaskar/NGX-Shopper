@@ -1,5 +1,6 @@
 // angular core
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -10,6 +11,7 @@ import { CookieModule } from 'ngx-cookie';
 import { ToastrModule } from 'ngx-toastr';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
+
 
 // app modules
 import { SharedModule } from '@app-seller/shared';
@@ -29,12 +31,15 @@ import { CacheInterceptor } from '@app-seller/auth/interceptors/cache/cache-inte
 // error handler config
 import { AppErrorHandler } from './config/error-handling.config';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     // angular core modules
     BrowserAnimationsModule,
     BrowserModule,
+    ReactiveFormsModule,
+    
 
     // app modules
     AppRoutingModule,
@@ -53,6 +58,7 @@ import { AppErrorHandler } from './config/error-handling.config';
     OrderCloudModule.forRoot(OcSDKConfig),
     CookieModule.forRoot(),
     ToastrModule.forRoot(),
+    
   ],
   providers: [
     {

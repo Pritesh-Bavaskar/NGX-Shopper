@@ -9,5 +9,6 @@ import { UserGroupDetailsComponent } from './containers/user-group-details/user-
 @NgModule({
   imports: [SharedModule, UserGroupRoutingModule],
   declarations: [UserGroupTableComponent, UserGroupFormComponent, UserGroupDetailsComponent],
+  exports:[UserGroupTableComponent]
 })
 export class UserGroupModule {}

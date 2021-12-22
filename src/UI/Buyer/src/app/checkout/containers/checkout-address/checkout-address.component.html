@@ -4,6 +4,9 @@
 <button *ngIf="addressType === 'Billing'"
         class="btn btn-secondary mb-3 ml-2"
         (click)="useShippingAsBilling()">Use Shipping Address</button>
+<!-- <button *ngIf="addressType === 'Shipping'"
+        class="btn btn-primary mb-3 ml-2"
+       >Use Default Address</button> -->
 <shared-address-form [existingAddress]="selectedAddress"
                      (formSubmitted)="saveAddress($event.address, $event.formDirty)"
                      btnText="Save and Continue"></shared-address-form>

@@ -56,6 +56,10 @@ export class CheckoutAddressComponent extends CheckoutSectionBaseComponent
     }
 
     this.setSelectedAddress();
+    if(this.selectedAddress==null){
+      this.getDefaultAddress()
+    }
+   
   }
 
   clearFiltersOnModalClose() {
@@ -96,6 +100,21 @@ export class CheckoutAddressComponent extends CheckoutSectionBaseComponent
   existingAddressSelected(address: BuyerAddress) {
     this.selectedAddress = address;
     this.modalService.close(this.modalID);
+  }
+
+  getDefaultAddress(){
+    if(this.addressType!="Billing"){
+      this.ocMeService.Get().subscribe(res=>{
+        if(res.xp.defaultAddressID!=null ||res.xp.defaultAddressID!=undefined ){
+          this.ocMeService.GetAddress(res.xp.defaultAddressID).subscribe(res=>{
+            this.selectedAddress=res
+            
+          })
+        }
+       
+      })
+    }
+  
   }
 
   useShippingAsBilling() {

@@ -4,13 +4,18 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 // ordercloud
-import { OcAuthService, OcTokenService } from '@ordercloud/angular-sdk';
+import {
+  OcAuthService,
+  OcMeService,
+  OcTokenService,
+} from '@ordercloud/angular-sdk';
 import {
   applicationConfiguration,
   AppConfig,
 } from '@app-buyer/config/app.config';
 import { AppAuthService } from '@app-buyer/auth/services/app-auth.service';
 import { AppStateService } from '@app-buyer/shared';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'auth-login',
@@ -25,7 +30,9 @@ export class LoginComponent implements OnInit {
     private ocAuthService: OcAuthService,
     private appAuthService: AppAuthService,
     private ocTokenService: OcTokenService,
+    private ocMeService: OcMeService,
     private router: Router,
+    private toastrService: ToastrService,
     private formBuilder: FormBuilder,
     private appStateService: AppStateService,
     @Inject(applicationConfiguration) public appConfig: AppConfig
@@ -49,7 +56,9 @@ export class LoginComponent implements OnInit {
         this.appConfig.scope
       )
       .subscribe((response) => {
+        // console.log(response);
         const rememberMe = this.form.get('rememberMe').value;
+
         if (rememberMe && response.refresh_token) {
           /**
            * set the token duration in the dashboard - https://developer.ordercloud.io/dashboard/settings
@@ -60,6 +69,13 @@ export class LoginComponent implements OnInit {
           this.appAuthService.setRememberStatus(true);
         }
         this.ocTokenService.SetAccess(response.access_token);
+        this.ocMeService.Get().subscribe((res) => {
+          console.log('get', res);
+          if (!res.xp.isApproved) {
+            this.appAuthService.logout();
+            this.toastrService.error('User not approved');
+          }
+        });
         this.router.navigateByUrl('/home');
       });
   }

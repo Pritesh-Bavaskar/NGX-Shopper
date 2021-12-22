@@ -29,6 +29,8 @@ export class AddressListComponent implements OnInit {
   resultsPerPage = 8;
   addAddressModalID = 'add-profile-address';
   areYouSureModalID = 'are-you-sure-address';
+  isDefault:boolean;
+  defAddr:string
 
   constructor(
     private ocMeService: OcMeService,
@@ -37,6 +39,14 @@ export class AddressListComponent implements OnInit {
 
   ngOnInit() {
     this.reloadAddresses();
+    // const me={
+    //   xp:{defaultAddressID:""}
+    // }
+    // this.ocMeService.Patch(me).subscribe(res=>{
+    //   console.log(res)
+    // })
+    this.getDefaultAddress()
+    
   }
 
   public showAddAddress() {
@@ -61,6 +71,7 @@ export class AddressListComponent implements OnInit {
 
   protected refresh() {
     this.currentAddress = null;
+    this.getDefaultAddress()
     this.reloadAddresses();
   }
 
@@ -73,12 +84,23 @@ export class AddressListComponent implements OnInit {
     }
   }
 
-  private addAddress(address: BuyerAddress) {
+  private addAddress(address: any) {
     address.Shipping = true;
     address.Billing = true;
+  
+ 
+
     this.ocMeService.CreateAddress(address).subscribe(
-      () => {
+      (res) => {
         this.refresh();
+        if(address.isDefault){
+          const me={
+            xp:{defaultAddressID:res.ID}
+          }
+          this.ocMeService.Patch(me).subscribe(res=>{
+            console.log(res)
+          })
+        }
       },
       (error) => {
         throw error;
@@ -86,9 +108,17 @@ export class AddressListComponent implements OnInit {
     );
   }
 
-  private updateAddress(address: BuyerAddress) {
+  private updateAddress(address: any) {
     address.ID = this.currentAddress.ID;
-    this.ocMeService.PatchAddress(address.ID, address).subscribe(
+    this.isDefault = address.isDefault 
+    
+    if(this.isDefault){
+      const me = {
+            xp:{defaultAddressID:address.ID}
+           }
+            this.ocMeService.Patch(me).subscribe(res=>{
+        })
+      this.ocMeService.PatchAddress(address.ID, address).subscribe(
       () => {
         this.refresh();
       },
@@ -96,6 +126,17 @@ export class AddressListComponent implements OnInit {
         throw error;
       }
     );
+    }else{
+      this.ocMeService.PatchAddress(address.ID, address).subscribe(
+      () => {
+        this.refresh();
+      },
+      (error) => {
+        throw error;
+      }
+    );
+    }
+    
   }
 
   public deleteAddress(address: BuyerAddress) {
@@ -116,8 +157,29 @@ export class AddressListComponent implements OnInit {
   }
 
   private reloadAddresses() {
+  
     this.ocMeService
       .ListAddresses({ ...this.requestOptions, pageSize: this.resultsPerPage })
-      .subscribe((res) => (this.addresses = res));
+      .subscribe((res) => {
+        this.addresses = res
+        //console.log(res)
+       
+      });
+  }
+
+  getDefaultAddress(){
+    this.ocMeService.Get().subscribe(res=>{
+      //console.log(res)
+      this.defAddr=res.xp.defaultAddressID;
+      // this.ocMeService.ListAddresses().subscribe(res1=>{
+      // //  console.log(res1)
+      //   res1.Items.forEach(element => {
+      //     if(element.ID==res.xp.defaultAddressID){
+      //       this.isDefault=true
+      //     }
+      //   });
+       
+      // })
+    })
   }
 }

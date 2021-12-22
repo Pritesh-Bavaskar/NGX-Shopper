@@ -1,0 +1,50 @@
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-8">
+        <h1>Products-Category</h1>
+      </div>
+    </div>
+    <div class="mt-4"
+         *ngIf="categories">
+      <shared-generic-browse [meta]="categories?.Meta"
+                             searchPlaceholder="Categories"
+                             (search)="searchChanged($event)"
+                             (page)="pageChanged($event)">
+        <table *ngIf="categories.Items.length"
+               class="table table-striped table-bordered mt-3">
+          <thead>
+            <tr>
+              <th *ngIf="columns.indexOf('Assign') > -1">Assigned</th>
+              <th *ngIf="columns.indexOf('ID') > -1">
+                <shared-sort-column fieldName="ID"
+                                    [currentSort]="requestOptions.sortBy"
+                                    (sort)="sortChanged($event)">ID</shared-sort-column>
+              </th>
+              <th *ngIf="columns.indexOf('Name') > -1">
+                <shared-sort-column fieldName="Name"
+                                    [currentSort]="requestOptions.sortBy"
+                                    (sort)="sortChanged($event)">Name</shared-sort-column>
+              </th>
+              <th *ngIf="columns.indexOf('Active') > -1">Active</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let allcategoriy of categories.Items">
+              <th *ngIf="columns.indexOf('Assign') > -1">
+              </th>
+              <td *ngIf="columns.indexOf('ID') > -1">{{allcategoriy.ID}}</td>
+              <td *ngIf="columns.indexOf('Name') > -1">
+                  {{allcategoriy.Name}}
+                <!-- <a [routerLink]="['/products', product.ID]">{{allcategoriy.Name}}</a>
+   -->            </td>
+              <td *ngIf="columns.indexOf('Active') > -1"
+                  class="text-center">
+                <fa-icon aria-hidden="true"
+                         [ngClass]="{'text-success': allcategoriy.Active}"
+                         [icon]="faCircle"></fa-icon>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </shared-generic-browse>
+    </div>

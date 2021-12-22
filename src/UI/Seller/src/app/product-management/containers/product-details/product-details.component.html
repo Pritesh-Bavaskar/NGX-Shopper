@@ -37,6 +37,23 @@
                           (update)="updateProduct($event)"></product-images>
         </ng-template>
       </ngb-tab>
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <fa-icon [icon]="faImage"></fa-icon> Categories
+        </ng-template>
+        <ng-template ngbTabContent>
+          <app-product-category-table></app-product-category-table>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <fa-icon [icon]="faImage"></fa-icon> Assignment
+        </ng-template>
+        <ng-template ngbTabContent>
+          <app-product-assignment-table [productID]="productID"></app-product-assignment-table>
+     
+        </ng-template>
+      </ngb-tab>
     </ngb-tabset>
   </div>
 </div>

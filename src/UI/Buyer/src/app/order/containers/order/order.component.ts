@@ -28,9 +28,11 @@ export class OrderComponent implements OnInit {
 
   ngOnInit() {
     this.approvalVersion = this.router.url.includes('/approval');
-    this.order$ = this.activatedRoute.data.pipe(
+     this.order$ = this.activatedRoute.data.pipe(
       map(({ orderResolve }) => orderResolve.order)
     );
+    
+  
   }
 
   favorite() {

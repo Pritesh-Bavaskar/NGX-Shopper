@@ -16,6 +16,9 @@ export const ocAppConfig: AppConfig = {
     'Shopper',
     'BuyerReader',
     'PasswordReset',
+    'UserGroupReader',
+    'UserGroupAdmin',
+    'FullAccess'
   ],
   availablePaymentMethods: [
     PaymentMethod.PurchaseOrder,

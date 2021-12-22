@@ -2,11 +2,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 // 3rd party
-import { BuyerAddress, Address } from '@ordercloud/angular-sdk';
+import { BuyerAddress, Address, ListBuyerAddress, OcMeService } from '@ordercloud/angular-sdk';
 
 import { AppGeographyService } from '@app-buyer/shared/services/geography/geography.service';
 import { AppFormErrorService } from '@app-buyer/shared/services/form-error/form-error.service';
 import { RegexService } from '@app-buyer/shared/services/regex/regex.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'shared-address-form',
@@ -21,23 +22,41 @@ export class AddressFormComponent implements OnInit {
   stateOptions: string[] = [];
   countryOptions: { label: string; abbreviation: string }[];
   addressForm: FormGroup;
+  isDefaultAddr:boolean=false;
+  currentAddr:any="";
+  router:any;
 
   constructor(
     private geographyService: AppGeographyService,
     private formBuilder: FormBuilder,
     private formErrorService: AppFormErrorService,
-    private regexService: RegexService
+    private regexService: RegexService,
+    private ocMeService: OcMeService,
+    private _router: Router
   ) {
     this.countryOptions = this.geographyService.getCountries();
+    this.router = _router.url;
+  
   }
 
   ngOnInit() {
-    this.setForm();
+    this.setForm();    
   }
 
   @Input()
   set existingAddress(address: BuyerAddress) {
     this._existingAddress = address || {};
+    // if(address){
+    //   this.currentAddr=address.ID||''
+    //   this.checkIsDefault()
+    // }
+    if(address){
+      this.currentAddr = address.ID || '';
+      this.checkIsDefault()
+    }else{
+       this.currentAddr = '';
+      this.checkIsDefault()
+    }
     this.setForm();
     this.addressForm.markAsPristine();
   }
@@ -74,6 +93,7 @@ export class AddressFormComponent implements OnInit {
       ],
       Country: [this._existingAddress.Country || 'US', Validators.required],
       ID: this._existingAddress.ID || '',
+      isDefault:this._existingAddress.xp && this._existingAddress.xp.isDefault,
     });
     this.onCountryChange();
   }
@@ -99,10 +119,38 @@ export class AddressFormComponent implements OnInit {
       return this.formErrorService.displayFormErrors(this.addressForm);
     }
     this.formSubmitted.emit({
-      address: this.addressForm.value,
+     // address: {...this.addressForm.value,xp:{'isDefault':this.addressForm.value.isDefault}},
+      address:this.addressForm.value,
       formDirty: this.addressForm.dirty,
     });
   }
+
+  checkIsDefault(){
+
+    if(this.currentAddr!=''){
+      this.ocMeService.Get().subscribe(res=>{
+        if(res.xp.defaultAddressID == this.currentAddr){
+          this.isDefaultAddr = false
+        }else{
+          this.isDefaultAddr = true
+        }
+      })
+      
+    }else{
+      this.isDefaultAddr = true 
+    }
+}
+  
+  //   checkIsDefault1(){
+  
+  //     if(this.currentAddr!=''){
+  //       this.isDefaultAddr = false 
+  //     }else{
+  //     this.isDefaultAddr = true 
+  //     }
+  // }
+
+  
 
   // control display of error messages
   hasRequiredError = (controlName: string) =>

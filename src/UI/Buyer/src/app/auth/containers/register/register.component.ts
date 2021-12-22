@@ -72,10 +72,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     const me = <MeUser>this.form.value;
     me.Active = true;
+    me.xp={isApproved:false,City:'',ZipCode:''};
+    console.log(me)
 
     this.ocMeService
       .Register(this.ocTokenService.GetAccess(), me)
-      .subscribe(() => {
+      .subscribe((res) => {
+        console.log(res)
         this.toastrService.success('New User Created');
         this.router.navigate(['/login']);
       });

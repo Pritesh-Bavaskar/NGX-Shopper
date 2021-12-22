@@ -1,95 +1,100 @@
-<form (ngSubmit)="onSubmit()"
-      novalidate
-      [formGroup]="userForm"
-      name="UserForm">
-  <div class="form-group row">
-    <label for="ID"
-           class="col-sm-3 control-label font-weight-bold mt-1">ID</label>
-    <div class="col-sm-9">
-      <input type="text"
-             formControlName="ID"
-             class="form-control"
-             id="ID"
-             placeholder="(Optional)" />
-      <span *ngIf="hasPatternError('ID')"
-            class="error-message">ID can only contain characters Aa-Zz 0-9 - _ (no spaces)</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="username"
-           class="col-sm-3 control-label font-weight-bold mt-1">Username</label>
-    <div class="col-sm-9">
-      <input type="text"
-             formControlName="Username"
-             class="form-control"
-             id="username" />
-      <span *ngIf="hasRequiredError('Username')"
-            class="error-message">Username is Required</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="firstname"
-           class="col-sm-3 control-label font-weight-bold mt-1">First Name</label>
-    <div class="col-sm-9">
-      <input type="text"
-             formControlName="FirstName"
-             class="form-control"
-             id="firstName" />
-      <span *ngIf="hasRequiredError('FirstName')"
-            class="error-message">FirstName is Required</span>
-      <span *ngIf="hasPatternError('FirstName')"
-            class="error-message">Name can only contain characters Aa-Zz 0-9 - ' .</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="lastname"
-           class="col-sm-3 control-label font-weight-bold mt-1">Last Name</label>
-    <div class="col-sm-9">
-      <input type="text"
-             formControlName="LastName"
-             class="form-control"
-             id="lastName" />
-      <span *ngIf="hasRequiredError('LastName')"
-            class="error-message">LastName is Required</span>
-      <span *ngIf="hasPatternError('LastName')"
-            class="error-message">Name can only contain characters Aa-Zz 0-9 - ' .</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="email"
-           class="col-sm-3 control-label font-weight-bold mt-1">Email</label>
-    <div class="col-sm-9">
-      <input type="text"
-             formControlName="Email"
-             class="form-control"
-             id="email" />
-      <span *ngIf="hasEmailError()"
-            class="error-message">Please enter a valid email</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="phonenumber"
-           class="col-sm-3 control-label font-weight-bold mt-1">Phone Number</label>
-    <div class="col-sm-9">
-      <input type="text"
-             formControlName="Phone"
-             class="form-control"
-             placeholder="(Optional)"
-             id="phonenumber"
-             autocomplete="off" />
-      <span *ngIf="hasPatternError('Phone')"
-            class="error-message">Phone can only contain 20 numbers or "-" chars (no spaces)</span>
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-9 offset-sm-3">
-      <input type="checkbox"
-             formControlName="Active"
-             class="mr-2"
-             id="active" />
-      <label for="active">Active</label>
-    </div>
-  </div>
-  <button type="submit"
-          class="btn btn-primary mt-4 w-100">{{ btnText }}</button>
+<form  novalidate [formGroup]="userForm" name="UserForm">
+       <div class="form-group row">
+              <label for="ID" class="col-sm-3 control-label font-weight-bold mt-1">ID</label>
+              <div class="col-sm-9">
+                     <input type="text" formControlName="ID" class="form-control" id="ID" placeholder="(Optional)" />
+                     <span *ngIf="hasPatternError('ID')" class="error-message">ID can only contain characters Aa-Zz 0-9
+                            - _ (no spaces)</span>
+              </div>
+       </div>
+       <div class="form-group row">
+              <label for="username" class="col-sm-3 control-label font-weight-bold mt-1">Username</label>
+              <div class="col-sm-9">
+                     <input type="text" formControlName="Username" class="form-control" id="username" />
+                     <span *ngIf="hasRequiredError('Username')" class="error-message">Username is Required</span>
+              </div>
+       </div>
+       <div class="form-group row">
+              <label for="firstname" class="col-sm-3 control-label font-weight-bold mt-1">First Name</label>
+              <div class="col-sm-9">
+                     <input type="text" formControlName="FirstName" class="form-control" id="firstName" />
+                     <span *ngIf="hasRequiredError('FirstName')" class="error-message">FirstName is Required</span>
+                     <span *ngIf="hasPatternError('FirstName')" class="error-message">Name can only contain characters
+                            Aa-Zz 0-9 - ' .</span>
+              </div>
+       </div>
+       <div class="form-group row">
+              <label for="lastname" class="col-sm-3 control-label font-weight-bold mt-1">Last Name</label>
+              <div class="col-sm-9">
+                     <input type="text" formControlName="LastName" class="form-control" id="lastName" />
+                     <span *ngIf="hasRequiredError('LastName')" class="error-message">LastName is Required</span>
+                     <span *ngIf="hasPatternError('LastName')" class="error-message">Name can only contain characters
+                            Aa-Zz 0-9 - ' .</span>
+              </div>
+       </div>
+       <div class="form-group row">
+              <label for="email" class="col-sm-3 control-label font-weight-bold mt-1">Email</label>
+              <div class="col-sm-9">
+                     <input type="text" formControlName="Email" class="form-control" id="email" />
+                     <span *ngIf="hasEmailError()" class="error-message">Please enter a valid email</span>
+              </div>
+       </div>
+       <div class="form-group row">
+              <label for="phonenumber" class="col-sm-3 control-label font-weight-bold mt-1">Phone Number</label>
+              <div class="col-sm-9">
+                     <input type="text" formControlName="Phone" class="form-control" placeholder="(Optional)"
+                            id="phonenumber" autocomplete="off" />
+                     <span *ngIf="hasPatternError('Phone')" class="error-message">Phone can only contain 20 numbers or
+                            "-" chars (no spaces)</span>
+              </div>
+       </div>
+
+       <div class="form-group row">
+              <label for="City" class="col-sm-3 control-label font-weight-bold mt-1">City</label>
+              <div class="col-sm-9">
+                     <input type="text" formControlName="City" class="form-control" id="City" />
+                     <span *ngIf="hasRequiredError('City')" class="error-message">City is Required</span>
+                     <span *ngIf="hasPatternError('City')" class="error-message">City can only contain characters '
+                            .</span>
+              </div>
+       </div>
+
+       <div class="form-group row">
+              <label for="ZipCode" class="col-sm-3 control-label font-weight-bold mt-1">zipcode</label>
+              <div class="col-sm-9">
+                     <input type="text" formControlName="ZipCode" class="form-control" id="ZipCode" />
+                     <span *ngIf="hasRequiredError('ZipCode')" class="error-message">zipcode is Required</span>
+                     <span *ngIf="hasPatternError('ZipCode')" class="error-message">Not Valid zipcode</span>
+              </div>
+       </div>
+
+       <div class="form-group">
+              <div class="col-sm-9 offset-sm-3">
+                     <input type="checkbox" formControlName="Active" class="mr-2" id="active" />
+                     <label for="active">Active</label>
+              </div>
+       </div>
+
+       <button type="button" (click)="onSubmit()" *ngIf="router=='/users'" class="btn btn-primary mt-4 w-100">{{ btnText }}</button>
+
+       <button (click)="openConfirmationDialog()" *ngIf="router=='/ApprovableUsers'"
+              class="btn btn-primary mt-4 w-100">Approve</button>
+
+       <shared-modal *ngIf="router=='/ApprovableUsers'" id="{{confirmationModalId}}" modalTitle="Confirmation">
+              <h5 class="text-center">Are you sure want to Approve user ? </h5>
+              <div class="row">
+                     <div class="col-md-12">
+                            <div class="text-center">
+                                   <button type="button" class="btn btn-outline-dark mt-4 w-25 mx-3" (click)="closeConfirmDialog()">
+                                          <fa-icon [icon]="faUser"></fa-icon> No
+                                   </button>
+                                   
+
+                                   <button type="button" (click)="onSubmit()" *ngIf="router=='/ApprovableUsers'"
+                                          class="btn btn-success mt-4 w-25">Yes</button>
+                            </div>
+                     </div>
+              </div>
+       </shared-modal>
+
 </form>

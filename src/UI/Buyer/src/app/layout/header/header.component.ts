@@ -23,11 +23,12 @@ import {
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { AppStateService } from '@app-buyer/shared';
-import { Order, MeUser, ListCategory } from '@ordercloud/angular-sdk';
+import { Order, MeUser, ListCategory, OcMeService, OcUserGroupService, OcUserService } from '@ordercloud/angular-sdk';
 import { takeWhile, tap, debounceTime, delay, filter } from 'rxjs/operators';
 import { AddToCartEvent } from '@app-buyer/shared/models/add-to-cart-event.interface';
 import { AppAuthService } from '@app-buyer/auth';
 import { SearchComponent } from '@app-buyer/shared/components/search/search.component';
+import { pluck } from 'rxjs/operators';
 
 @Component({
   selector: 'layout-header',
@@ -53,11 +54,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   faSignOutAlt = faSignOutAlt;
   faUserCircle = faUserCircle;
   faHome = faHome;
+  assignedIDs: any = [];
+  UserID: string;
+  isAdmin: boolean = false;
+  isImpersonate: boolean = false;
+  id:string;
 
   constructor(
     private appStateService: AppStateService,
     private appAuthService: AppAuthService,
     private activatedRoute: ActivatedRoute,
+    private ocUserGroupService: OcUserGroupService,
+    private ocMeService: OcMeService,
+    private ocUserService: OcUserService,
     private router: Router,
     @Inject(applicationConfiguration) public appConfig: AppConfig
   ) {}
@@ -69,6 +78,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.buildAddToCartListener();
     this.clearSearchOnNavigate();
+    this.getUserID();
+    setTimeout(() => {
+      this.getData();
+    }, 1000);
+
+    this.id = localStorage.getItem("key")
+    if(this.id != ""){
+      this.isImpersonate = true
+    }
   }
 
   isMobile(): boolean {
@@ -138,4 +156,57 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.alive = false;
   }
+  getUserAssignment() {
+    return this.ocUserGroupService.ListUserAssignments('BUYER_ORGANIZATION', {
+      userID: this.UserID,
+    });
+  }
+
+  getData() {
+    this.assignedIDs = [];
+    this.getUserAssignment()
+      .pipe(pluck('Items'))
+      .subscribe((res: any) => {
+        res.forEach((res1) => {
+          this.assignedIDs.push(res1.UserGroupID);
+          //console.log(res1.UserGroupID)
+        });
+      });
+
+  
+    setTimeout(() => {
+   
+      this.assignedIDs.forEach((element) => {
+        //console.log(element)
+        if (element == 'USER_GROUP_ADMIN') {
+          this.isAdmin = true;
+        }
+      });
+    }, 1000);
+    
+  }
+
+  private getUserID() {
+    this.ocMeService.Get().subscribe((me) => {
+      this.UserID = me.ID;
+    });
+  }
+
+  impersonateLogout(){
+    this.ocUserService
+      .GetAccessToken("BUYER_ORGANIZATION", this.id, {
+        ClientID: '8FA0872D-9EEE-4DB4-AEA3-E72B7B191157',
+        Roles: ['FullAccess'],
+      })
+      .subscribe((res) => {
+        localStorage.setItem('key', '');
+        window.open(
+          `localhost:4200/impersonation?token=${res.access_token}`,
+          '_blank'
+        );
+      });
+  }
+
+  
+
 }

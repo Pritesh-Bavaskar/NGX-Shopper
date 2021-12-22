@@ -1,24 +1,24 @@
 <div class="container"
-     *ngIf="buyerOrg$ | async; let buyer">
+     *ngIf="sortedAnnouncements">
 
   <!-- Announcements can be managed in the seller application  -->
-  <div *ngIf="buyer?.xp?.Announcement"
+  <!-- <div *ngIf="buyer?.xp?.Announcement"
        class="alert alert-info my-3"><b>
       <fa-icon class="pr-3"
                [icon]="faBullhorn"></fa-icon>
-    </b>{{ buyer?.xp?.Announcement }}</div>
+    </b>{{ buyer?.xp?.Announcement }}</div> -->
 
   <!-- Carousel slides can be managed in the seller application -->
-  <ngb-carousel *ngIf="buyer?.xp?.carouselSlides">
+  <ngb-carousel *ngIf="sortedAnnouncements">
     <ng-template ngbSlide
-                 *ngFor="let slide of buyer.xp.carouselSlides">
+                 *ngFor="let slide of sortedAnnouncements">
       <img class="img-fluid"
-           style="width:100%;"
-           [src]="slide.URL"
+           style="width:100%; height: 250px;"
+           src="https://via.placeholder.com/150/24f355"
            alt="Random first slide">
       <div class="carousel-caption">
-        <h3>{{ slide.headerText }}</h3>
-        <p>{{ slide.bodyText }}</p>
+        <h3>{{ slide.Title }}</h3>
+        <p>{{ slide.Order }}</p>
       </div>
     </ng-template>
   </ngb-carousel>

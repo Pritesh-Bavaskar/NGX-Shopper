@@ -21,6 +21,10 @@
       </div>
       <div class="col-lg-8"
            *ngIf="productsSet">
+           <div *ngIf="count>0"> 
+              <h5 class="text-warning">Warning : {{count}} item(s) needs approval</h5>
+           </div>
+           
         <shared-lineitem-list-wrapper>
           <shared-line-item-card *ngFor="let li of lineItems.Items"
                                  [lineitem]="li"

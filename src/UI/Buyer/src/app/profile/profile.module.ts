@@ -7,6 +7,8 @@ import { AddressListComponent } from '@app-buyer/profile/containers/address-list
 import { PaymentListComponent } from '@app-buyer/profile/containers/payment-list/payment-list.component';
 import { MeUpdateComponent } from './containers/me-update/me-update.component';
 import { ChangePasswordFormComponent } from './components/change-password-form/change-password-form.component';
+import { UserTableComponent } from './containers/user-table/user-table.component';
+import { UserListComponent } from './containers/user-list/user-list.component';
 
 @NgModule({
   imports: [SharedModule, ProfileRoutingModule],
@@ -16,6 +18,8 @@ import { ChangePasswordFormComponent } from './components/change-password-form/c
     PaymentListComponent,
     MeUpdateComponent,
     ChangePasswordFormComponent,
+    UserTableComponent,
+    UserListComponent,
   ],
 })
 export class ProfileModule {}

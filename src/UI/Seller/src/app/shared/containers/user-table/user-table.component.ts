@@ -11,6 +11,7 @@ import {
   faPlusCircle,
   faCircle,
   faUser,
+  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   AppConfig,
@@ -19,6 +20,7 @@ import {
 import { BaseBrowse } from '@app-seller/shared/models/base-browse.class';
 import { ModalService } from '@app-seller/shared/services/modal/modal.service';
 import { forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'user-table',
@@ -27,13 +29,16 @@ import { forkJoin } from 'rxjs';
 })
 export class UserTableComponent extends BaseBrowse implements OnInit {
   users: ListUser;
+  validUsers:ListUser;
   selectedUser: User;
   faTrash = faTrashAlt;
   faCircle = faCircle;
   faPlusCircle = faPlusCircle;
   faUser = faUser;
+  faUsers = faUsers;
   createModalID = 'CreateUserModal';
   editModalID = 'EditUserModal';
+  router: any;
   // Default Columns.
   @Input()
   columns = [
@@ -42,8 +47,10 @@ export class UserTableComponent extends BaseBrowse implements OnInit {
     'FirstName',
     'LastName',
     'Email',
+    'city',
     'Active',
     'Delete',
+    'Assigned',
   ];
 
   // Only use this when assigning users to user groups.
@@ -54,10 +61,12 @@ export class UserTableComponent extends BaseBrowse implements OnInit {
     private ocUserService: OcUserService,
     private ocUserGroupService: OcUserGroupService,
     private modalService: ModalService,
+    private _router: Router,
     @Inject(applicationConfiguration) private appConfig: AppConfig
   ) {
     // The BaseBrowse super class contains functionality for search, sort, and pagination.
     super();
+    this.router = _router.url;
   }
 
   ngOnInit() {
@@ -75,21 +84,71 @@ export class UserTableComponent extends BaseBrowse implements OnInit {
 
   // Overrides a method in BaseBrowse
   // TODO - I think this observable stuff can be made cleaner with operators
+  // loadData(): void {
+  //   // this.requestOptions is inherited from BaseBrowse
+  //   this.ocUserService
+  //     .List(this.appConfig.buyerID, this.requestOptions)
+  //     .subscribe((users) => {
+  //       setTimeout(() => {
+  //         this.users = users;
+
+  //         const newUsers = [];
+
+  //         this.users.Items.forEach((user) => {
+  //           if (user.xp.isApproved) {
+  //             newUsers.push(user);
+  //           }
+  //         });
+
+  //         this.users = { ...this.users, Items: newUsers };
+  //       }, 1000);
+
+  //       users.Items.forEach((user) => {
+  //         if (user.xp.isApproved) {
+  //           console.log(user);
+  //           if (this.columns.indexOf('Assign') < 0 || !this.userGroupID) {
+  //             return (this.users = users);
+  //           }
+  //           const queue = users.Items.map((curr_user) =>
+  //             this.getAssignment(curr_user)
+  //           );
+  //           forkJoin(queue).subscribe((res: ListUserGroupAssignment[]) => {
+  //             res.forEach((group, index) => {
+  //               if (group.Items.length === 0) return;
+  //               else if (users.Items[index].xp.isApproved) {
+  //                 (users.Items[index] as any).Assigned = true;
+  //               }
+  //             });
+  //             this.users = users;
+  //           });
+  //         }
+  //       });
+  //     });
+  // }
   loadData(): void {
     // this.requestOptions is inherited from BaseBrowse
     this.ocUserService
       .List(this.appConfig.buyerID, this.requestOptions)
       .subscribe((users) => {
+        this.validUsers={...users};
+        this.validUsers.Items=[];
+        users.Items.forEach(element => {
+          if(element.xp.isApproved){
+           this.validUsers.Items.push(element)
+          }
+        });
+        //console.log("data",this.validUsers)
         if (this.columns.indexOf('Assign') < 0 || !this.userGroupID) {
-          return (this.users = users);
+          return (this.users = this.validUsers);
         }
-        const queue = users.Items.map((user) => this.getAssignment(user));
+        const queue = this.validUsers.Items.map((user) => this.getAssignment(user));
         forkJoin(queue).subscribe((res: ListUserGroupAssignment[]) => {
+         
           res.forEach((group, index) => {
             if (group.Items.length === 0) return;
-            (users.Items[index] as any).Assigned = true;
+            (this.validUsers.Items[index] as any).Assigned = true;
           });
-          this.users = users;
+          this.users = this.validUsers;
         });
       });
   }

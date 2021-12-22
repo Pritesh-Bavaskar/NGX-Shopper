@@ -13,12 +13,13 @@
     <shared-address-display [address]="address">
       <div actions
            *ngIf="address.Editable">
-        <fa-icon class="text-danger ml-3 icon-button--hover-reactive"
+        <fa-icon *ngIf="defAddr!=address.ID" class="text-danger ml-3 icon-button--hover-reactive"
                  (click)="showAreYouSure(address)"
                  [icon]="faTrashAlt"></fa-icon>
         <fa-icon class="text-primary ml-3 icon-button--hover-reactive"
                  (click)="showEditAddress(address)"
                  [icon]="faEdit"></fa-icon>
+                 <!-- *ngIf="!address.xp.isDefault" -->
       </div>
     </shared-address-display>
   </ng-template>

@@ -27,6 +27,8 @@
   </div>
   <span *ngIf="hasRequiredError('Name')"
         class="error-message">Name is Required</span>
+  
+  
   <div class="form-group row">
     <label for="description"
            class="col-sm-3 control-label font-weight-bold mt-1">Description</label>
@@ -38,6 +40,20 @@
                 placeholder="(optional)"></textarea>
     </div>
   </div>
+  <div class="form-group row">
+    <label for="adminName"
+           class="col-sm-3 control-label font-weight-bold mt-1">Admin Name</label>
+    <div class="col-sm-9">
+      <input type="text"
+             formControlName="adminName"
+             class="form-control"
+             id="adminName" />
+    </div>
+  </div>
+  <span *ngIf="hasRequiredError('adminName')"
+        class="error-message">Admin Name is Required</span>
+
+
   <button type="submit"
           class="btn btn-primary mt-4 w-100">{{ btnText }}</button>
 </form>

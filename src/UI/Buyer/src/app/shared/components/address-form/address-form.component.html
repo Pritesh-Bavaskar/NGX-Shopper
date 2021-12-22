@@ -1,148 +1,185 @@
-<form (ngSubmit)="onSubmit()"
-      novalidate
-      [formGroup]="addressForm"
-      name="RegisterForm">
+<form
+  (ngSubmit)="onSubmit()"
+  novalidate
+  [formGroup]="addressForm"
+  name="RegisterForm"
+>
   <div class="form-group">
-    <label class="sr-only"
-           for="country">Country</label>
-    <select formControlName="Country"
-            class="form-control"
-            id="Country"
-            (change)="onCountryChange($event)">
-      <option [ngValue]="null"
-              disabled>Country</option>
-      <option *ngFor="let country of countryOptions"
-              [value]="country.abbreviation">{{ country.label }}</option>
+    <label class="sr-only" for="country">Country</label>
+    <select
+      formControlName="Country"
+      class="form-control"
+      id="Country"
+      (change)="onCountryChange($event)"
+    >
+      <option [ngValue]="null" disabled>Country</option>
+      <option
+        *ngFor="let country of countryOptions"
+        [value]="country.abbreviation"
+        >{{ country.label }}</option
+      >
     </select>
-    <span *ngIf="hasRequiredError('Country')"
-          class="error-message">Country is required</span>
+    <span *ngIf="hasRequiredError('Country')" class="error-message"
+      >Country is required</span
+    >
   </div>
   <div class="row">
-    <div [hidden]="true"
-         class="col-md-6 form-group">
-      <label class="sr-only"
-             for="ID">ID</label>
-      <input type="text"
-             formControlName="ID"
-             class="form-control"
-             id="ID"
-             placeholder="ID" />
+    <div [hidden]="true" class="col-md-6 form-group">
+      <label class="sr-only" for="ID">ID</label>
+      <input
+        type="text"
+        formControlName="ID"
+        class="form-control"
+        id="ID"
+        placeholder="ID"
+      />
     </div>
     <div class="col-md-6 form-group">
-      <label class="sr-only"
-             for="FirstName">First Name</label>
-      <input type="text"
-             formControlName="FirstName"
-             class="form-control"
-             id="FirstName"
-             placeholder="First Name"
-             autofocus="true"
-             autocomplete="off" />
-      <span *ngIf="hasRequiredError('FirstName')"
-            class="error-message">First Name is required</span>
-      <span *ngIf="hasPatternError('FirstName')"
-            class="error-message">Name can only contain characters Aa-Zz 0-9 - ' .</span>
+      <label class="sr-only" for="FirstName">First Name</label>
+      <input
+        type="text"
+        formControlName="FirstName"
+        class="form-control"
+        id="FirstName"
+        placeholder="First Name"
+        autofocus="true"
+        autocomplete="off"
+      />
+      <span *ngIf="hasRequiredError('FirstName')" class="error-message"
+        >First Name is required</span
+      >
+      <span *ngIf="hasPatternError('FirstName')" class="error-message"
+        >Name can only contain characters Aa-Zz 0-9 - ' .</span
+      >
     </div>
     <div class="col-md-6 form-group">
-      <label class="sr-only"
-             for="LastName">Last Name</label>
-      <input type="text"
-             formControlName="LastName"
-             class="form-control"
-             id="LastName"
-             placeholder="Last Name"
-             autocomplete="off" />
-      <span *ngIf="hasRequiredError('LastName')"
-            class="error-message">Last Name is required</span>
-      <span *ngIf="hasPatternError('LastName')"
-            class="error-message">Name can only contain characters Aa-Zz 0-9 - ' .</span>
+      <label class="sr-only" for="LastName">Last Name</label>
+      <input
+        type="text"
+        formControlName="LastName"
+        class="form-control"
+        id="LastName"
+        placeholder="Last Name"
+        autocomplete="off"
+      />
+      <span *ngIf="hasRequiredError('LastName')" class="error-message"
+        >Last Name is required</span
+      >
+      <span *ngIf="hasPatternError('LastName')" class="error-message"
+        >Name can only contain characters Aa-Zz 0-9 - ' .</span
+      >
     </div>
   </div>
   <div class="form-group">
-    <label class="sr-only"
-           for="Street1">Address 1</label>
-    <input type="text"
-           formControlName="Street1"
-           class="form-control"
-           id="Street1"
-           placeholder="Address 1"
-           autocomplete="off" />
-    <span *ngIf="hasRequiredError('Street1')"
-          class="error-message">Address 1 is required</span>
+    <label class="sr-only" for="Street1">Address 1</label>
+    <input
+      type="text"
+      formControlName="Street1"
+      class="form-control"
+      id="Street1"
+      placeholder="Address 1"
+      autocomplete="off"
+    />
+    <span *ngIf="hasRequiredError('Street1')" class="error-message"
+      >Address 1 is required</span
+    >
   </div>
   <div class="form-group">
-    <label class="sr-only"
-           for="Street2">Address 2</label>
-    <input type="text"
-           formControlName="Street2"
-           class="form-control"
-           id="Street2"
-           placeholder="Address 2"
-           autocomplete="off" />
+    <label class="sr-only" for="Street2">Address 2</label>
+    <input
+      type="text"
+      formControlName="Street2"
+      class="form-control"
+      id="Street2"
+      placeholder="Address 2"
+      autocomplete="off"
+    />
   </div>
   <div class="row">
     <div class="col-md-4 form-group">
-      <label class="sr-only"
-             for="City">City</label>
-      <input type="text"
-             formControlName="City"
-             class="form-control"
-             id="City"
-             placeholder="City"
-             autocomplete="off" />
-      <span *ngIf="hasRequiredError('City')"
-            class="error-message">City is required</span>
-      <span *ngIf="hasPatternError('City')"
-            class="error-message">City can only contain characters Aa-Zz 0-9 - ' . </span>
+      <label class="sr-only" for="City">City</label>
+      <input
+        type="text"
+        formControlName="City"
+        class="form-control"
+        id="City"
+        placeholder="City"
+        autocomplete="off"
+      />
+      <span *ngIf="hasRequiredError('City')" class="error-message"
+        >City is required</span
+      >
+      <span *ngIf="hasPatternError('City')" class="error-message"
+        >City can only contain characters Aa-Zz 0-9 - ' .
+      </span>
     </div>
     <div class="col-md-2 form-group">
-      <label class="sr-only"
-             for="State">State</label>
-      <select *ngIf="stateOptions.length !== 0"
-              formControlName="State"
-              class="form-control"
-              id="State">
-        <option [ngValue]="null"
-                disabled>State</option>
-        <option *ngFor="let State of stateOptions"
-                [value]="State">{{ State }}</option>
+      <label class="sr-only" for="State">State</label>
+      <select
+        *ngIf="stateOptions.length !== 0"
+        formControlName="State"
+        class="form-control"
+        id="State"
+      >
+        <option [ngValue]="null" disabled>State</option>
+        <option *ngFor="let State of stateOptions" [value]="State">{{
+          State
+        }}</option>
       </select>
-      <input *ngIf="stateOptions.length === 0"
-             type="text"
-             formControlName="State"
-             class="form-control"
-             id="State"
-             autocomplete="off" />
-      <span *ngIf="hasRequiredError('State')"
-            class="error-message">State is required</span>
+      <input
+        *ngIf="stateOptions.length === 0"
+        type="text"
+        formControlName="State"
+        class="form-control"
+        id="State"
+        autocomplete="off"
+      />
+      <span *ngIf="hasRequiredError('State')" class="error-message"
+        >State is required</span
+      >
     </div>
     <div class="col-md-3 form-group">
-      <label class="sr-only"
-             for="zipCode">Zip Code</label>
-      <input type="text"
-             formControlName="Zip"
-             class="form-control"
-             id="zipCode"
-             placeholder="Zip Code"
-             autocomplete="off" />
-      <span *ngIf="hasRequiredError('Zip')"
-            class="error-message">Zip Code is required</span>
-      <span *ngIf="hasPatternError('Zip')"
-            class="error-message">Zip Code is invalid</span>
+      <label class="sr-only" for="zipCode">Zip Code</label>
+      <input
+        type="text"
+        formControlName="Zip"
+        class="form-control"
+        id="zipCode"
+        placeholder="Zip Code"
+        autocomplete="off"
+      />
+      <span *ngIf="hasRequiredError('Zip')" class="error-message"
+        >Zip Code is required</span
+      >
+      <span *ngIf="hasPatternError('Zip')" class="error-message"
+        >Zip Code is invalid</span
+      >
     </div>
     <div class="col-md-3 form-group">
-      <label class="sr-only"
-             for="Phone">Phone Number</label>
-      <input type="text"
-             formControlName="Phone"
-             class="form-control"
-             id="Phone"
-             placeholder="Phone Number"
-             autocomplete="off" />
-      <span *ngIf="hasPatternError('Phone')"
-            class="error-message">Phone can only contain 20 numbers or "-" chars (no spaces)</span>
+      <label class="sr-only" for="Phone">Phone Number</label>
+      <input
+        type="text"
+        formControlName="Phone"
+        class="form-control"
+        id="Phone"
+        placeholder="Phone Number"
+        autocomplete="off"
+      />
+      <span *ngIf="hasPatternError('Phone')" class="error-message"
+        >Phone can only contain 20 numbers or "-" chars (no spaces)</span
+      >
+    </div>
+    <div class="col-md-3 form-group" *ngIf="router!='/checkout'">
+    <div  *ngIf="isDefaultAddr">
+        <input
+          type="checkbox"
+          formControlName="isDefault"
+          class="mr-2"
+          id="isDefault"
+        />
+        <label for="isDefault">Set Default</label>
     </div>
   </div>
-  <button type="submit"
-          class="btn btn-primary">{{ btnText }}</button>
+  </div>
+  <button type="submit" class="btn btn-primary">{{ btnText }}</button>
 </form>

@@ -16,6 +16,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FavoriteProductsService } from '@app-buyer/shared/services/favorites/favorites.service';
 import { ProductSortStrategy } from '@app-buyer/product/models/product-sort-strategy.enum';
 import { isEmpty as _isEmpty, each as _each } from 'lodash';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'product-list',
@@ -34,8 +35,20 @@ export class ProductListComponent implements OnInit {
   createModalID = 'selectCategory';
   facets: ListFacet[];
   lineItems: ListLineItem;
+  form: FormGroup;
+  
+  pageSizes = [
+    { id: 1, name: "15" },
+    { id: 2, name: "30" },
+    { id: 3, name: "45" },
+    { id: 4, name: "60" },
+    { id: 5, name: "75" },
+  ];
+  pageSize:any=15;
+  size:any=15;
 
   constructor(
+    private formBuilder: FormBuilder,
     public activatedRoute: ActivatedRoute,
     private ocMeService: OcMeService,
     private router: Router,
@@ -46,12 +59,27 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.setForm();
     this.productList$ = this.getProductData();
     this.getCategories();
     this.configureRouter();
     this.appStateService.lineItemSubject.subscribe(
       (lineItems) => (this.lineItems = lineItems)
     );
+    
+  }
+
+  private setForm() {
+    this.form = this.formBuilder.group({
+      strategy: "15",
+    });
+  }
+
+  public assignSize() {
+    this.size = this.form.get('strategy').value;
+    //this.sortStrategyChange.emit(sortStrategy);
+    console.log("size",this.size)
+    this.productList$ = this.getProductData();
   }
 
   getProductData(): Observable<ListBuyerProduct> {
@@ -64,10 +92,12 @@ export class ProductListComponent implements OnInit {
         this.searchTerm = queryParams.search || null;
       }),
       flatMap((queryParams) => {
+       // console.log(queryParams.page)
         return this.ocMeService
           .ListProducts({
             categoryID: queryParams.category,
             page: queryParams.page,
+            pageSize:this.size,
             search: queryParams.search,
             sortBy: queryParams.sortBy,
             filters: {
@@ -211,7 +241,7 @@ export class ProductListComponent implements OnInit {
 
   addToCart(event: AddToCartEvent) {
     this.cartService
-      .addToCart(event.product.ID, event.quantity)
+      .addToCart(event.product.ID, event.quantity,event.product.xp.MaxQuantityLimit)
       .subscribe(() => this.appStateService.addToCartSubject.next(event));
   }
 

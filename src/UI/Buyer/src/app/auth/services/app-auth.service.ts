@@ -13,6 +13,7 @@ import { CookieService } from 'ngx-cookie';
 import { AppErrorHandler } from '@app-buyer/config/error-handling.config';
 import { AppStateService } from '@app-buyer/shared/services/app-state/app-state.service';
 import { BaseResolveService } from '@app-buyer/shared/services/base-resolve/base-resolve.service';
+import { keys as _keys } from 'lodash';
 
 export const TokenRefreshAttemptNotPossible =
   'Token refresh attempt not possible';
@@ -20,9 +21,10 @@ export const TokenRefreshAttemptNotPossible =
   providedIn: 'root',
 })
 export class AppAuthService {
-  private rememberMeCookieName = `${this.appConfig.appname
-    .replace(/ /g, '_')
-    .toLowerCase()}_rememberMe`;
+  private rememberMeCookieName = "ordercloud.token"
+  // `${this.appConfig.appname
+  //   .replace(/ /g, '_')
+  //   .toLowerCase()}_rememberMe`;
   fetchingRefreshToken = false;
   failedRefreshAttempt = false;
   refreshToken: BehaviorSubject<string>;
@@ -98,6 +100,17 @@ export class AppAuthService {
   }
 
   logout(): void {
+    const cookiePrefix = "ordercloud.token"
+      //  .replace(/ /g, '_')
+      //  .toLowerCase();
+    const appCookieNames = _keys(this.cookieService.getAll());
+    appCookieNames.forEach((cookieName) => {
+     // alert(cookieName)
+      if (cookieName.indexOf(cookiePrefix) > -1) {
+      //  console.log("here")
+        this.cookieService.remove(cookieName);
+      }
+    });
     this.ocTokenService.RemoveAccess();
     this.appStateService.isLoggedIn.next(false);
     if (this.appConfig.anonymousShoppingEnabled) {
@@ -107,6 +120,21 @@ export class AppAuthService {
       this.router.navigate(['/login']);
     }
   }
+
+  
+  // logout(): Observable<any> {
+  //   const cookiePrefix = this.appConfig.appname
+  //     .replace(/ /g, '_')
+  //     .toLowerCase();
+  //   const appCookieNames = _keys(this.cookieService.getAll());
+  //   appCookieNames.forEach((cookieName) => {
+  //     if (cookieName.indexOf(cookiePrefix) > -1) {
+  //       this.cookieService.remove(cookieName);
+  //     }
+  //   });
+  //   this.appStateService.isLoggedIn.next(false);
+  //   return of(this.router.navigate(['/login']));
+  // }
 
   authAnonymous(): Observable<string> {
     return this.ocAuthService

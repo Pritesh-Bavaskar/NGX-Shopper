@@ -21,7 +21,8 @@
                            [productDetails]="li.Product"
                            readOnly="true"></shared-line-item-card>
   </shared-lineitem-list-wrapper>
-  <form *ngIf="!appConfig.anonymousShoppingEnabled"
+  <form 
+  
         novalidate
         [formGroup]="form">
     <textarea type="text"

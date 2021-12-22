@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 // These regular expressions are all used for form validation
 export class RegexService {
-  constructor() {}
+  constructor() { }
 
   // used for all Ordercloud IDs
   get ID() {
@@ -21,6 +21,13 @@ export class RegexService {
   get HumanName() {
     return "^[a-zA-Z0-9-.'\\s]*$"; // only alphanumic and space . '
   }
+  get City() {
+    return "^[a-zA-Z-.'\\s]*$"; // only alphanumic and space . '
+  }
+
+  get ZipCode(){
+   return '^[0-9]{6}(?:-[0-9]{4})?$';
+  }
 
   get Email() {
     return '^.+@.+\\..+$'; // contains @ and . with text surrounding
@@ -29,6 +36,7 @@ export class RegexService {
   get Phone() {
     return '^[0-9-]{0,20}$'; // max 20 chars, numbers and -
   }
+  
 
   // used for Carousel text
   get HundredChar() {

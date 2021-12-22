@@ -40,6 +40,25 @@
                 placeholder="(Optional)"></textarea>
     </div>
   </div>
+    <div class="form-group row">
+        <label for="description"
+           class="col-sm-3 control-label font-weight-bold mt-1">Max Limit</label>
+    <div class="col-sm-9">
+      <input type="number"
+             formControlName="MaxLimit"
+             class="mr-2"
+             id="MaxLimit" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="name" class="col-sm-3 control-label font-weight-bold mt-1">Price Schedule</label>
+     <div class="col-sm-9">
+       <select class="form-control" formControlName="priceSchedule" id="priceSchedule">
+         <option value=""   >Select Price Schedule</option>
+         <option *ngFor="let prs of priceScheduls" value="{{prs.ID}}" >{{prs.Name}}</option>
+       </select>
+     </div>
+</div>
   <div class="form-group">
     <div class="col-sm-9 offset-sm-3">
       <input type="checkbox"
@@ -58,6 +77,16 @@
       <label for="featured">Featured</label>
     </div>
   </div>
+   <div class="form-group">
+    <div class="col-sm-9 offset-sm-3">
+      <input type="checkbox"
+             formControlName="approvalRequired"
+             class="mr-2"
+             id="approvalRequired" />
+      <label for="approvalRequired">Approval Required</label>
+    </div>
+  </div>
+
   <button type="submit"
           class="btn btn-primary mt-4 w-100">{{ btnText }}</button>
 </form>

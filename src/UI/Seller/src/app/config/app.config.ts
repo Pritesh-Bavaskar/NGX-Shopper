@@ -29,6 +29,7 @@ export const ocAppConfig: AppConfig = {
     'AddressAdmin',
     'CategoryAdmin',
     'CatalogAdmin',
+    'FullAccess',
   ],
 };
 

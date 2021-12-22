@@ -37,6 +37,7 @@ export class UserGroupFormComponent implements OnInit {
       ID: this._existingUserGroup.ID || '',
       Name: this._existingUserGroup.Name || '',
       Description: this._existingUserGroup.Description || '',
+      adminName:(this._existingUserGroup && this._existingUserGroup.xp && this._existingUserGroup.xp.adminName) || '',
     });
   }
 
@@ -48,6 +49,7 @@ export class UserGroupFormComponent implements OnInit {
       ],
       Name: [this._existingUserGroup.Name || '', Validators.required],
       Description: [this._existingUserGroup.Description || ''],
+      adminName:[this._existingUserGroup && this._existingUserGroup.xp && this._existingUserGroup.xp.adminName || '',Validators.required]
     });
   }
 
@@ -56,7 +58,13 @@ export class UserGroupFormComponent implements OnInit {
       return this.formErrorService.displayFormErrors(this.userGroupForm);
     }
 
-    this.formSubmitted.emit(this.userGroupForm.value);
+    const userGroupInfo={
+      ...this.userGroupForm.value,
+      xp:{adminName:this.userGroupForm.value.adminName}
+
+    }
+
+    this.formSubmitted.emit(userGroupInfo);
   }
 
   // control display of error messages

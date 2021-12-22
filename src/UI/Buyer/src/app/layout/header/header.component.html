@@ -63,6 +63,13 @@
           <a class="dropdown-item"
              routerLinkActive="active"
              routerLink="/profile/payment-methods">Payment Methods</a>
+             <a *ngIf="isAdmin" class="dropdown-item"
+             routerLinkActive="active"
+             routerLink="/profile/users">Users</a>
+             <a *ngIf="isImpersonate" class="dropdown-item"
+             (click)="impersonateLogout()"
+             routerLinkActive="active"
+             >Impersonate Logout</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item"
              (click)="logout()"

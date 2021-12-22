@@ -80,6 +80,8 @@ export class ProductTableComponent extends BaseBrowse implements OnInit {
     });
   }
 
+  
+
   assignProduct(productID: string, assigned: boolean) {
     const request = assigned
       ? this.ocCategoryService.SaveProductAssignment(this.catalogID, {
@@ -106,4 +108,6 @@ export class ProductTableComponent extends BaseBrowse implements OnInit {
       this.loadData();
     });
   }
+
+ 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Product, OcProductService } from '@ordercloud/angular-sdk';
+import { Product, OcProductService, OcCategoryService } from '@ordercloud/angular-sdk';
 import { flatMap } from 'rxjs/operators';
 import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
@@ -20,6 +20,7 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private ocProductService: OcProductService,
+    private ocCategoryService: OcCategoryService,
     private router: Router
   ) {}
 
@@ -46,4 +47,6 @@ export class ProductDetailsComponent implements OnInit {
       }
     });
   }
+
+ 
 }

@@ -92,7 +92,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewChecked {
       Value: o.Value,
     }));
     this.cartService
-      .addToCart(event.product.ID, event.quantity, specs)
+      .addToCart(event.product.ID, event.quantity,event.product.xp.MaxQuantityLimit,specs)
       .subscribe(() => this.appStateService.addToCartSubject.next(event));
   }
 

@@ -26,6 +26,8 @@ export class CartComponent implements OnInit, OnDestroy {
   lineItems: ListLineItem;
   productsSet = false;
   alive = true;
+  containsApproval:boolean=false;
+  count:number;
 
   constructor(
     private appStateService: AppStateService,
@@ -41,6 +43,15 @@ export class CartComponent implements OnInit, OnDestroy {
       .pipe(takeWhile(() => this.alive))
       .subscribe((lis) => {
         this.lineItems = lis;
+        //console.log(this.lineItems)
+        this.count=0;
+        lis.Items.forEach(element => {
+          this.containsApproval=element.xp.MaxQuantity
+          if(this.containsApproval){
+            this.count++;
+          }
+        });
+
         if (!this.productsSet) {
           const queue = [];
           lis.Items.forEach((li) =>
@@ -71,7 +82,9 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   updateLineItem(li: LineItem) {
-    this.cartService.updateQuantity(li.ID, li.Quantity).subscribe();
+    this.cartService
+      .updateQuantity(li.ID, li.Quantity, li.Product.xp.MaxQuantityLimit)
+      .subscribe();
   }
 
   ngOnDestroy() {

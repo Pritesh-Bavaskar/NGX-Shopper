@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 // ordercloud
-import { OcAuthService, OcTokenService } from '@ordercloud/angular-sdk';
+import { OcAuthService, OcMeService, OcTokenService } from '@ordercloud/angular-sdk';
 import {
   applicationConfiguration,
   AppConfig,
@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
     private ocAuthService: OcAuthService,
     private appAuthService: AppAuthService,
     private ocTokenService: OcTokenService,
+    private ocMeService: OcMeService,
     private router: Router,
     private formBuilder: FormBuilder,
     private appStateService: AppStateService,
@@ -49,7 +50,10 @@ export class LoginComponent implements OnInit {
       )
       .subscribe((response) => {
         const rememberMe = this.form.get('rememberMe').value;
+        
         if (rememberMe && response.refresh_token) {
+
+          
           /**
            * set the token duration in the dashboard - https://developer.ordercloud.io/dashboard/settings
            * refresh tokens are configured per clientID and initially set to 0
@@ -60,6 +64,9 @@ export class LoginComponent implements OnInit {
         }
         this.ocTokenService.SetAccess(response.access_token);
         this.appStateService.isLoggedIn.next(true);
+        this.ocMeService.Get().subscribe((res) => {
+          console.log("get",res);
+        });
         this.router.navigateByUrl('/home');
       });
   }

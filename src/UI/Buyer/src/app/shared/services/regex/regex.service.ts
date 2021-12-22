@@ -24,6 +24,14 @@ export class RegexService {
     return '^[0-9]{2}-[0-9]{2}-[0-9]{4}$'; // mm-dd-yyyy, all numbers
   }
 
+  get City() {
+    return "^[a-zA-Z-.'\\s]*$"; // only alphanumic and space . '
+  }
+
+  get ZipCode(){
+   return '^[0-9]{6}(?:-[0-9]{4})?$';
+  }
+
   getZip(countryCode = 'US') {
     switch (countryCode) {
       case 'CA':

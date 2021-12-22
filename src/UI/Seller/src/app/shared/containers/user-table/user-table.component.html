@@ -4,10 +4,15 @@
       <h1>Users</h1>
     </div>
     <div class="col-4">
-      <button class="btn btn-primary float-right mt-3"
+      <button class="btn btn-primary float-right mt-3 mx-3"
               (click)="openCreateModal()">
         <fa-icon [icon]="faPlusCircle"></fa-icon> New User
       </button>
+      <a class="btn btn-success float-right mt-3"
+      *ngIf="router=='/users'"
+              routerLink="/ApprovableUsers">
+        <fa-icon [icon]="faPlusCircle"></fa-icon> Show Approvable Users
+    </a>
       <shared-modal id="{{ createModalID }}"
                     modalTitle="Create A New User">
         <user-form btnText="Create"
@@ -61,8 +66,14 @@
                                   [currentSort]="requestOptions.sortBy"
                                   (sort)="sortChanged($event)">Email</shared-sort-column>
             </th>
+             <th *ngIf="columns.indexOf('City') > -1">
+              <shared-sort-column fieldName="City"
+                                  [currentSort]="requestOptions.sortBy"
+                                  (sort)="sortChanged($event)">City</shared-sort-column>
+            </th>
             <th *ngIf="columns.indexOf('Active') > -1">Active</th>
-            <th *ngIf="columns.indexOf('Delete') > -1"></th>
+            <th *ngIf="columns.indexOf('Delete') > -1">Delete</th>
+               <th *ngIf="columns.indexOf('Delete') > -1">Assigned</th>
           </tr>
         </thead>
         <tbody>
@@ -82,6 +93,7 @@
             <td *ngIf="columns.indexOf('FirstName') > -1">{{ user.FirstName }}</td>
             <td *ngIf="columns.indexOf('LastName') > -1">{{ user.LastName }}</td>
             <td *ngIf="columns.indexOf('Email') > -1">{{ user.Email }}</td>
+            <td *ngIf="columns.indexOf('City') > -1">{{ user.xp.City }}</td>
             <td *ngIf="columns.indexOf('Active') > -1"
                 class="text-center">
               <fa-icon aria-hidden="true"
@@ -93,6 +105,15 @@
                       class="btn btn-danger btn-xs">
                 <fa-icon [icon]="faTrash"></fa-icon>
                 <span class="hidden-xs"> Delete</span>
+              </button>
+            </td>
+             <td *ngIf="columns.indexOf('Assigned') > -1">
+              <button 
+              
+              [routerLink]="['/users', user.ID]"
+                      class="btn btn-success btn-xs">
+                <fa-icon [icon]="faUsers"></fa-icon>
+                <span class="hidden-xs"> Show Groups</span>
               </button>
             </td>
           </tr>

@@ -73,25 +73,73 @@ export class CartService {
 
   updateQuantity(
     lineItemID: string,
-    newQuantity: number
+    newQuantity: number,
+    MaxQuantityLimit?:any
   ): Observable<LineItem> {
-    return this.ocLineItemService
-      .Patch('outgoing', this.currentOrder.ID, lineItemID, {
-        Quantity: newQuantity,
-      })
-      .pipe(tap(() => this.updateAppState()));
+   // if(maxLmit){
+      if(newQuantity>MaxQuantityLimit){
+        return this.ocLineItemService
+        .Patch('outgoing', this.currentOrder.ID, lineItemID, {
+          Quantity: newQuantity,
+          xp:{'MaxQuantity':true}
+        })
+        .pipe(tap(() => this.updateAppState()));
+      }else{
+        return this.ocLineItemService
+        .Patch('outgoing', this.currentOrder.ID, lineItemID, {
+          Quantity: newQuantity,
+          xp:{'MaxQuantity':false}
+        })
+        .pipe(tap(() => this.updateAppState()));
+      }
+    // }else{
+      
+    //   return this.ocLineItemService
+    //   .Patch('outgoing', this.currentOrder.ID, lineItemID, {
+    //     Quantity: newQuantity,
+    //   })
+    //   .pipe(tap(() => this.updateAppState()));
+    // }
+    
+    
   }
 
   addToCart(
     productID: string,
     quantity: number,
-    specs: LineItemSpec[] = []
+    MaxQuantityLimit?:any,
+    specs: LineItemSpec[] = [],
+    
   ): Observable<LineItem> {
-    const newLineItem: LineItem = {
-      ProductID: productID,
-      Quantity: quantity,
-      Specs: specs,
-    };
+    let newLineItem: LineItem 
+   // console.log(MaxQuantityLimit)
+    //if(maxLimit){
+      if(quantity>MaxQuantityLimit){
+        newLineItem= {
+         ProductID: productID,
+         Quantity: quantity,
+         Specs: specs,
+         xp:{'MaxQuantity':true}
+       };
+     }else{
+       newLineItem= {
+         ProductID: productID,
+         Quantity: quantity,
+         Specs: specs,
+         xp:{'MaxQuantity':false}
+       };
+     }
+    //}
+    // else{
+    //   newLineItem = {
+    //   ProductID: productID,
+    //   Quantity: quantity,
+    //   Specs: specs,
+    //  };
+   
+    // }
+    
+    // console.log(newLineItem)
     // order is well defined, line item can be added
     if (!_isUndefined(this.currentOrder.DateCreated)) {
       return this.addLineItem(newLineItem);

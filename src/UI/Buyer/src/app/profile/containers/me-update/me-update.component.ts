@@ -53,6 +53,8 @@ export class MeUpdateComponent implements OnInit, OnDestroy {
       ],
       Email: ['', [Validators.required, Validators.email]],
       Phone: ['', Validators.pattern(this.regexService.Phone)],
+      City: ['', Validators.pattern(this.regexService.City)],
+      ZipCode: ['', Validators.pattern(this.regexService.ZipCode)],
     });
   }
 
@@ -82,7 +84,11 @@ export class MeUpdateComponent implements OnInit, OnDestroy {
       return this.formErrorService.displayFormErrors(this.form);
     }
 
-    const me = <MeUser>this.form.value;
+    // const me = <MeUser>this.form.value;
+    const me = <MeUser>{
+      ...this.form.value,
+      xp: { City: this.form.value.City, ZipCode: this.form.value.ZipCode },
+    };
     me.Active = true;
 
     this.ocMeService.Patch(me).subscribe((res) => {
@@ -100,12 +106,18 @@ export class MeUpdateComponent implements OnInit, OnDestroy {
         LastName: me.LastName,
         Phone: me.Phone,
         Email: me.Email,
+        City: me.xp.City,
+        ZipCode: me.xp.ZipCode,
       });
     });
   }
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  openChangePasswordModal(){
+    this.modalService.open(this.changePasswordModalId);
   }
 
   // control display of error messages

@@ -23,6 +23,7 @@ export class LineItemCardComponent {
 
   public deleteLineItem() {
     this.deletedLineItem.emit(this.lineitem);
+    
   }
 
   updateQuantity(qty: number) {

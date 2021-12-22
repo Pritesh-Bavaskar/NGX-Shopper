@@ -40,9 +40,10 @@ export class CheckoutConfirmComponent extends CheckoutSectionBaseComponent
   }
 
   ngOnInit() {
-    if (!this.appConfig.anonymousShoppingEnabled) {
-      this.form = this.formBuilder.group({ comments: '' });
-    }
+    // if (!this.appConfig.anonymousShoppingEnabled) {
+      
+    // }
+    this.form = this.formBuilder.group({ comments: '' });
     this.order = this.appStateService.orderSubject.value;
     this.payments$ = this.appPaymentService.getPayments(
       'outgoing',
@@ -50,11 +51,14 @@ export class CheckoutConfirmComponent extends CheckoutSectionBaseComponent
     );
     this.lineItems$ = this.cartService.listAllItems(this.order.ID);
   }
+  //*ngIf="!appConfig.anonymousShoppingEnabled"
 
   saveCommentsAndSubmitOrder() {
     if (this.isSubmittingOrder) {
       return;
     }
+    
+    console.log(this.form.get('comments').value)
     this.isSubmittingOrder = true;
     this.ocOrderService
       .Patch('outgoing', this.order.ID, {
