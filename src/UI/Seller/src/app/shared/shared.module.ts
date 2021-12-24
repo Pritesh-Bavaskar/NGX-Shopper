@@ -39,6 +39,7 @@ import { AnnouncementTableComponent } from './containers/announcement-table/anno
 import { AnnouncementFormComponent } from './components/announcement-form/announcement-form.component';
 import { UserApprovableTableComponent } from './containers/user-approvable-table/user-approvable-table.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { UserTableShowgroupsComponent } from './containers/user-table-showgroups/user-table-showgroups.component';
 
 @NgModule({
   imports: [
@@ -119,6 +120,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     AnnouncementTableComponent,
     AnnouncementFormComponent,
     UserApprovableTableComponent,
+    UserTableShowgroupsComponent,
  
   ],
 })

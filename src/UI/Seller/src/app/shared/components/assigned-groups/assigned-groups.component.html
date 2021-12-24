@@ -10,8 +10,30 @@
         </div>
       </div>
 
-      <app-assigned-groups-table 
-      [userAssignedGroups]="assignedIDs" 
-      (refreshIDs)="getData()"></app-assigned-groups-table>
+      
+      
+      <div class="mt-3">
+        <ngb-tabset>
+          
+          <ngb-tab>
+            <ng-template ngbTabTitle>
+              <fa-icon [icon]="faImage"></fa-icon> User Assignment
+            </ng-template>
+            <ng-template ngbTabContent>
+          <app-assigned-groups-table 
+          [userAssignedGroups]="assignedIDs" 
+          (refreshIDs)="getData()"></app-assigned-groups-table>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <fa-icon [icon]="faImage"></fa-icon> Address Assignment
+        </ng-template>
+        <ng-template ngbTabContent>
+            <app-user-table-showgroups ></app-user-table-showgroups>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
      
 </div>

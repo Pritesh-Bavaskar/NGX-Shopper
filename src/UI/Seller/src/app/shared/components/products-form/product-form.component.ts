@@ -16,7 +16,7 @@ export class ProductFormComponent implements OnInit {
   @Output()
   formSubmitted = new EventEmitter();
   productForm: FormGroup;
-  priceScheduls:any
+  priceScheduls: any;
 
   constructor(
     private ocPriceScheduleService: OcPriceScheduleService,
@@ -26,9 +26,9 @@ export class ProductFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.ocPriceScheduleService.List().subscribe(res =>{
-      this.priceScheduls = res.Items
-  })
+    this.ocPriceScheduleService.List().subscribe((res) => {
+      this.priceScheduls = res.Items;
+    });
     this.setForm();
   }
 
@@ -43,12 +43,16 @@ export class ProductFormComponent implements OnInit {
       ID: this._existingProduct.ID || '',
       Name: this._existingProduct.Name || '',
       Description: this._existingProduct.Description || '',
-      MaxLimit: (this._existingProduct && this._existingProduct.xp && this._existingProduct.xp.MaxQuantityLimit) || '',
+      MaxLimit:
+        (this._existingProduct &&
+          this._existingProduct.xp &&
+          this._existingProduct.xp.MaxQuantityLimit) ||
+        '',
       Active: !!this._existingProduct.Active,
       Featured: this._existingProduct.xp && this._existingProduct.xp.Featured,
-      approvalRequired: this._existingProduct.xp && this._existingProduct.xp.ApprovalRequired,
-      priceSchedule:this._existingProduct.DefaultPriceScheduleID || ''
-      
+      approvalRequired:
+        this._existingProduct.xp && this._existingProduct.xp.ApprovalRequired,
+      priceSchedule: this._existingProduct.DefaultPriceScheduleID || '',
     });
   }
 
@@ -64,16 +68,21 @@ export class ProductFormComponent implements OnInit {
       ],
       Description: [this._existingProduct.Description || ''],
       MaxLimit: [
-        (this._existingProduct && this._existingProduct.xp && this._existingProduct.xp.MaxQuantityLimit) || ""
+        (this._existingProduct &&
+          this._existingProduct.xp &&
+          this._existingProduct.xp.MaxQuantityLimit) ||
+          '',
       ],
-      
+
       Active: [!!this._existingProduct.Active],
       Featured: [this._existingProduct.xp && this._existingProduct.xp.Featured],
-      approvalRequired: [this._existingProduct.xp && this._existingProduct.xp.ApprovalRequired],
-      priceSchedule: [this._existingProduct.DefaultPriceScheduleID || '',
-      [Validators.required],
-    ],
-   
+      approvalRequired: [
+        this._existingProduct.xp && this._existingProduct.xp.ApprovalRequired,
+      ],
+      priceSchedule: [
+        this._existingProduct.DefaultPriceScheduleID || '',
+        [Validators.required],
+      ],
     });
   }
 
@@ -83,29 +92,32 @@ export class ProductFormComponent implements OnInit {
       return this.formErrorService.displayFormErrors(this.productForm);
     }
     let maxLimitValue = this.productForm.value.MaxLimit;
-    console.log(maxLimitValue)
+    console.log(maxLimitValue);
 
     let product;
-    if(maxLimitValue == ""){
+    if (maxLimitValue == '') {
       product = {
-      ...this.productForm.value,
-      DefaultPriceScheduleID:this.productForm.value.priceSchedule,
-      QuantityMultiplier:1,
-      xp: { Featured: this.productForm.value.Featured,
-            ApprovalRequired:this.productForm.value.approvalRequired,
-            MaxQuantityLimit: 999999 },
+        ...this.productForm.value,
+        DefaultPriceScheduleID: this.productForm.value.priceSchedule,
+        QuantityMultiplier: 1,
+        xp: {
+          Featured: this.productForm.value.Featured,
+          ApprovalRequired: this.productForm.value.approvalRequired,
+          MaxQuantityLimit: 999999,
+        },
       };
-    }else{
+    } else {
       product = {
-      ...this.productForm.value,
-      DefaultPriceScheduleID:this.productForm.value.priceSchedule,
-      QuantityMultiplier:1,
-      xp: { Featured: this.productForm.value.Featured,
-            ApprovalRequired:this.productForm.value.approvalRequired,
-            MaxQuantityLimit: maxLimitValue },
+        ...this.productForm.value,
+        DefaultPriceScheduleID: this.productForm.value.priceSchedule,
+        QuantityMultiplier: 1,
+        xp: {
+          Featured: this.productForm.value.Featured,
+          ApprovalRequired: this.productForm.value.approvalRequired,
+          MaxQuantityLimit: maxLimitValue,
+        },
       };
     }
- 
 
     this.formSubmitted.emit(product);
   }

@@ -49,6 +49,12 @@ export class AddressFormComponent implements OnInit {
       LastName: this._existingAddress.LastName || '',
       Street1: this._existingAddress.Street1 || '',
       Street2: this._existingAddress.Street2 || '',
+      Landmark: [
+        (this._existingAddress &&
+          this._existingAddress.xp &&
+          this._existingAddress.xp.Landmark) ||
+          '',
+      ],
       City: this._existingAddress.City || '',
       State: this._existingAddress.State || null,
       Zip: this._existingAddress.Zip || '',
@@ -90,6 +96,12 @@ export class AddressFormComponent implements OnInit {
         ],
       ],
       Country: [this._existingAddress.Country || 'US', Validators.required],
+      Landmark: [
+        (this._existingAddress &&
+          this._existingAddress.xp &&
+          this._existingAddress.xp.Landmark) ||
+          '',
+      ],
       Phone: [
         this._existingAddress.Phone || '',
         Validators.pattern(this.regexService.Phone),
@@ -118,8 +130,15 @@ export class AddressFormComponent implements OnInit {
     if (this.addressForm.status === 'INVALID') {
       return this.formErrorService.displayFormErrors(this.addressForm);
     }
+    const addressFormData = {
+      ...this.addressForm.value,
+      xp: {
+        Landmark: this.addressForm.value.Landmark,
+      },
+    };
+
     this.formSubmitted.emit({
-      address: this.addressForm.value,
+      address: addressFormData,
       prevID: this._existingAddress.ID,
     });
   }

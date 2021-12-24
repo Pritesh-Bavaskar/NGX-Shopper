@@ -20,6 +20,7 @@ import { ModalService } from '@app-seller/shared/services/modal/modal.service';
 import { ToastrService } from 'ngx-toastr';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { AppStateService } from '@app-seller/shared/services/app-state/app-state.service';
+import { faThemeisle } from '@fortawesome/free-brands-svg-icons';
 @Component({
   selector: 'user-form',
   templateUrl: './user-form.component.html',
@@ -36,7 +37,17 @@ export class UserFormComponent implements OnInit {
   router: any;
   confirmationModalId = 'confirmationModalapprove';
   faUser = faUser;
-
+  bloodGroupItems = [
+    { id: 1, name: 'A+' },
+    { id: 2, name: 'A-' },
+    { id: 3, name: 'B+' },
+    { id: 4, name: 'B-' },
+    { id: 5, name: 'AB+' },
+    { id: 6, name: 'AB-' },
+    { id: 7, name: 'O+' },
+    { id: 8, name: 'O-' },
+  ];
+  bloodgroup: any;
   formValue: any;
 
   constructor(
@@ -71,6 +82,12 @@ export class UserFormComponent implements OnInit {
       Username: this._existingUser.Username || '',
       FirstName: this._existingUser.FirstName || '',
       LastName: this._existingUser.LastName || '',
+      bloodgroup:
+        [
+          this._existingUser &&
+            this._existingUser.xp &&
+            this._existingUser.xp.bloodgroup,
+        ] || '',
       Phone: this._existingUser.Phone || '',
       Email: this._existingUser.Email || '',
       Active: !!this._existingUser.Active,
@@ -103,6 +120,12 @@ export class UserFormComponent implements OnInit {
         this._existingUser.LastName || '',
         [Validators.required, Validators.pattern(this.regexService.HumanName)],
       ],
+      bloodgroup:
+        [
+          this._existingUser &&
+            this._existingUser.xp &&
+            this._existingUser.xp.bloodgroup,
+        ] || '',
       Phone: [
         this._existingUser.Phone || '',
         Validators.pattern(this.regexService.Phone),
@@ -143,12 +166,13 @@ export class UserFormComponent implements OnInit {
       Phone: this.userForm.value.Phone,
       Username: this.userForm.value.Username,
       xp: {
+        bloodgroup: this.userForm.value.BloodGroup,
         City: this.userForm.value.City,
         ZipCode: this.userForm.value.ZipCode,
         isApproved: true,
       },
     };
-    //this.formValue = this.userForm.value;
+    this.formValue = this.userForm.value;
     this.appStateService.userID = this.formValue.ID;
     this.appStateService.approveUserFormValue = this.formValue;
   };
@@ -165,15 +189,13 @@ export class UserFormComponent implements OnInit {
   };
 
   public onSubmit() {
-  
     let userInfo;
 
     if (this.router == '/ApprovableUsers') {
-
       if (this.userForm.status === 'INVALID') {
         this.modalService.close(this.confirmationModalId);
-         return this.formErrorService.displayFormErrors(this.userForm);
-       }else{
+        return this.formErrorService.displayFormErrors(this.userForm);
+      } else {
         userInfo = {
           ...this.appStateService.approveUserFormValue,
         };
@@ -181,17 +203,13 @@ export class UserFormComponent implements OnInit {
           user: userInfo,
           prevID: this.appStateService.userID,
         });
-  
+
         this.modalService.close(this.confirmationModalId);
         this.toastrService.success('User Approved succesfully ');
-       }
-
-     
+      }
     } else {
-      
-
       if (this.userForm.status === 'INVALID') {
-       // this.modalService.close(this.confirmationModalId);
+        // this.modalService.close(this.confirmationModalId);
         return this.formErrorService.displayFormErrors(this.userForm);
       }
 
@@ -204,6 +222,7 @@ export class UserFormComponent implements OnInit {
         Phone: this.userForm.value.Phone,
         Username: this.userForm.value.Username,
         xp: {
+          bloodgroup: this.userForm.value.bloodgroup,
           City: this.userForm.value.City,
           ZipCode: this.userForm.value.ZipCode,
           isApproved: true,

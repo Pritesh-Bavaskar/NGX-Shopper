@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   applicationConfiguration,
   AppConfig,
 } from '@app-seller/config/app.config';
+import { faBoxOpen, faImage } from '@fortawesome/free-solid-svg-icons';
 
 import { OcUserGroupService } from '@ordercloud/angular-sdk';
 
@@ -15,10 +16,14 @@ import { pluck } from 'rxjs/operators';
   styleUrls: ['./assigned-groups.component.scss'],
 })
 export class AssignedGroupsComponent implements OnInit {
+  @Input()
+  userAssignedGroups: any;
   activatedRoute: ActivatedRoute;
   userID: string;
   assignedIDs: any = [];
   asssignedGroups: any = [];
+  faBoxOpen = faBoxOpen;
+  faImage = faImage;
 
   constructor(
     private route: ActivatedRoute,
