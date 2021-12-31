@@ -3,6 +3,17 @@
       <div class="col-8">
         <h1>Address-Assignment</h1>
       </div>
+      <div class="col-4">
+        <button class="btn btn-primary float-right mt-3"
+                (click)="openNewAddressAssignmentModal()">
+          <fa-icon [icon]="faPlusCircle"></fa-icon> Assign Address
+        </button>
+        <shared-modal id="{{ modalID }}"
+                      modalTitle="Assign Addresses">
+          <app-address-assignment btnText="Save"
+          (AddressAssignedFormSubmitted)="addAddressAssigned($event)"></app-address-assignment>
+        </shared-modal>
+      </div>
     </div>
     <div class="mt-4"
          *ngIf="categories">
@@ -15,31 +26,30 @@
           <thead>
             <tr>
               <th *ngIf="columns.indexOf('Assign') > -1">Assigned</th>
-              <th *ngIf="columns.indexOf('ID') > -1">
+              <th *ngIf="columns.indexOf('AddressID') > -1">
                 <shared-sort-column fieldName="ID"
                                     [currentSort]="requestOptions.sortBy"
                                     (sort)="sortChanged($event)">Address ID</shared-sort-column>
               </th>
-              <th *ngIf="columns.indexOf('Name') > -1">
+              <th *ngIf="columns.indexOf('UserID') > -1">
                 <shared-sort-column fieldName="Name"
                                     [currentSort]="requestOptions.sortBy"
                                     (sort)="sortChanged($event)">User ID</shared-sort-column>
               </th>
-              <th *ngIf="columns.indexOf('Active') > -1">IsShipping</th>
+              <th >IsShipping</th>
             
-            <th *ngIf="columns.indexOf('Active') > -1">IsBilling</th>
+            <th >IsBilling</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let allcategoriy of categories.Items">
               <th *ngIf="columns.indexOf('Assign') > -1">
               </th>
-              <td *ngIf="columns.indexOf('ID') > -1">{{allcategoriy.AddressID}}</td>
-              <td *ngIf="columns.indexOf('Name') > -1">
-                  {{allcategoriy.UserID}}
-                <!-- <a [routerLink]="['/products', product.ID]">{{allcategoriy.Name}}</a>
-   -->            </td>
-              <td *ngIf="columns.indexOf('Active') > -1"
+              <td *ngIf="columns.indexOf('AddressID') > -1">{{allcategoriy.AddressID}}</td>
+              <td *ngIf="columns.indexOf('UserID') > -1">{{allcategoriy.UserID}}</td>
+              <td *ngIf="columns.indexOf('IsShipping') > -1">{{allcategoriy.IsShipping}}</td>
+              <td *ngIf="columns.indexOf('IsBilling') > -1">{{allcategoriy.IsBilling}}</td>
+              <!-- <td *ngIf="columns.indexOf('Active') > -1"
                   class="text-center">
                 <fa-icon aria-hidden="true"
                          [ngClass]="{'text-success': allcategoriy.Active}"
@@ -50,7 +60,7 @@
               <fa-icon aria-hidden="true"
                        [ngClass]="{'text-success': allcategoriy.Active}"
                        [icon]="faCircle"></fa-icon>
-            </td>
+            </td> -->
             </tr>
           </tbody>
         </table>

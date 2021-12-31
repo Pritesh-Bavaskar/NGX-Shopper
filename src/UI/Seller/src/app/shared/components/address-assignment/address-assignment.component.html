@@ -1,0 +1,48 @@
+<form (ngSubmit)="onSubmit()"
+      novalidate
+      [formGroup]="AddressAssignmentForm"
+      name="AddressAssignmentForm">
+
+<div class="form-group row">
+    <label for="name" class="col-sm-3 control-label font-weight-bold mt-1">User ID</label>
+     <div class="col-sm-9">
+       <select class="form-control" formControlName="UserID" id="UserID">
+         <option value=""   >Select UserID</option>
+         <option *ngFor="let usrid of userIdarr" value="{{usrid.ID}}" >{{usrid.ID}}</option>
+       </select>
+     </div>
+</div>
+
+<div class="form-group row">
+    <label for="name" class="col-sm-3 control-label font-weight-bold mt-1">Address</label>
+     <div class="col-sm-9">
+       <select class="form-control" formControlName="AddressID" id="AddressID">
+         <option value="">Select Address</option>
+         <option *ngFor="let addr of addressIdarr" value="{{addr.ID}}" >{{addr.ID}}</option>
+       </select>
+     </div>
+</div>
+
+<div class="form-group">
+  <div class="col-sm-9 offset-sm-3">
+    <input type="checkbox"
+           formControlName="IsShipping"
+           class="mr-2"
+           id="IsShipping" />
+    <label for="IsShipping">IsShipping</label>
+  </div>
+</div>
+
+<div class="form-group">
+  <div class="col-sm-9 offset-sm-3">
+    <input type="checkbox"
+           formControlName="IsBilling"
+           class="mr-2"
+           id="IsBilling" />
+    <label for="IsBilling">IsBilling</label>
+  </div>
+</div>
+
+<button type="submit"
+class="btn btn-primary mt-4 w-100">{{ btnText }}</button>
+</form>

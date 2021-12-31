@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { OcAddressService, OcCategoryService } from '@ordercloud/angular-sdk';
+import {
+  AddressAssignment,
+  OcAddressService,
+  OcCategoryService,
+} from '@ordercloud/angular-sdk';
 import { faCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { BaseBrowse } from '@app-seller/shared/models/base-browse.class';
@@ -19,18 +23,20 @@ import {
 export class UserTableShowgroupsComponent extends BaseBrowse implements OnInit {
   userId: string;
   categories: any;
-  columns = ['ID', 'Name', 'Active', 'Delete'];
+  columns = ['AddressID', 'UserID', 'IsShipping', 'IsBilling'];
   faTrash = faTrashAlt;
   faCircle = faCircle;
   faPlusCircle = faPlusCircle;
   id: any;
   prodCategoryIds: any = [];
+  modalID = 'NewAddressAssignmentModal';
 
   constructor(
     private router: Router,
     private ocCategoryService: OcCategoryService,
     private activatedRoute: ActivatedRoute,
-    private ocAddressService: OcAddressService
+    private ocAddressService: OcAddressService,
+    private modalService: ModalService
   ) {
     super();
     this.ocAddressService.ListAssignments;
@@ -49,9 +55,24 @@ export class UserTableShowgroupsComponent extends BaseBrowse implements OnInit {
     this.ocAddressService
       .ListAssignments('BUYER_ORGANIZATION', userIDData)
       .subscribe((res) => {
-        console.log(res);
+        // console.log(res);
         this.categories = res;
-        let newcategoryItems = [];
+        // let newcategoryItems = [];
+      });
+  }
+
+  openNewAddressAssignmentModal() {
+    this.modalService.open(this.modalID);
+  }
+
+  addAddressAssigned(addressAssignment: AddressAssignment) {
+    console.log('addAddressAssigned method called');
+    this.modalService.close(this.modalID);
+    console.log(addressAssignment);
+    this.ocAddressService
+      .SaveAssignment('BUYER_ORGANIZATION', addressAssignment)
+      .subscribe(() => {
+        this.loadData();
       });
   }
 }

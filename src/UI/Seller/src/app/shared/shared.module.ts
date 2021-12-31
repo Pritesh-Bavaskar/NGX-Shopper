@@ -40,6 +40,7 @@ import { AnnouncementFormComponent } from './components/announcement-form/announ
 import { UserApprovableTableComponent } from './containers/user-approvable-table/user-approvable-table.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { UserTableShowgroupsComponent } from './containers/user-table-showgroups/user-table-showgroups.component';
+import { AddressAssignmentComponent } from './components/address-assignment/address-assignment.component';
 
 @NgModule({
   imports: [
@@ -121,6 +122,7 @@ import { UserTableShowgroupsComponent } from './containers/user-table-showgroups
     AnnouncementFormComponent,
     UserApprovableTableComponent,
     UserTableShowgroupsComponent,
+    AddressAssignmentComponent,
  
   ],
 })
