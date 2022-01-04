@@ -29,6 +29,7 @@ export class AddressAssignmentComponent implements OnInit {
   addressIdarr: any;
   userIdarr: any;
   AddressAssignmentForm: FormGroup;
+  AddressAssignmentArr: any[];
   @Output()
   AddressAssignedFormSubmitted = new EventEmitter();
   ngOnInit() {
@@ -53,15 +54,20 @@ export class AddressAssignmentComponent implements OnInit {
     this.AddressAssignmentForm = this.formBuilder.group({
       AddressID: [''],
       UserID: [''],
-      IsShipping: [''],
-      IsBilling: [''],
+      IsShipping: ['' || false],
+      IsBilling: ['' || false],
     });
   }
 
   onSubmit() {
     if (this.AddressAssignmentForm.valid) {
       // console.log('from form', this.AddressAssignmentForm.value);
-      this.AddressAssignedFormSubmitted.emit(this.AddressAssignmentForm);
+      this.AddressAssignmentArr = {
+
+        ...this.AddressAssignmentForm.value
+      }
+
+      this.AddressAssignedFormSubmitted.emit(this.AddressAssignmentArr);
     }
   }
 }

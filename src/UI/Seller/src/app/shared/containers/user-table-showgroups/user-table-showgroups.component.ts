@@ -66,7 +66,7 @@ export class UserTableShowgroupsComponent extends BaseBrowse implements OnInit {
   }
 
   addAddressAssigned(addressAssignment: AddressAssignment) {
-    console.log('addAddressAssigned method called');
+    // console.log('addAddressAssigned method called');
     this.modalService.close(this.modalID);
     console.log(addressAssignment);
     this.ocAddressService

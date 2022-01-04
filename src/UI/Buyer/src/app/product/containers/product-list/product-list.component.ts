@@ -36,7 +36,7 @@ export class ProductListComponent implements OnInit {
   facets: ListFacet[];
   lineItems: ListLineItem;
   form: FormGroup;
-  
+
   pageSizes = [
     { id: 1, name: "15" },
     { id: 2, name: "30" },
@@ -44,8 +44,8 @@ export class ProductListComponent implements OnInit {
     { id: 4, name: "60" },
     { id: 5, name: "75" },
   ];
-  pageSize:any=15;
-  size:any=15;
+  pageSize: any = 15;
+  size: any = 15;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,17 +56,20 @@ export class ProductListComponent implements OnInit {
     public favoriteProductsService: FavoriteProductsService,
     private appStateService: AppStateService,
     private modalService: ModalService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.setForm();
-    this.productList$ = this.getProductData();
+    this.productList$ = this.getProdutDatas();
+    this.productList$.subscribe(res => {
+      console.log(res)
+    })
     this.getCategories();
     this.configureRouter();
     this.appStateService.lineItemSubject.subscribe(
       (lineItems) => (this.lineItems = lineItems)
     );
-    
+
   }
 
   private setForm() {
@@ -78,10 +81,16 @@ export class ProductListComponent implements OnInit {
   public assignSize() {
     this.size = this.form.get('strategy').value;
     //this.sortStrategyChange.emit(sortStrategy);
-    console.log("size",this.size)
+    console.log("size", this.size)
     this.productList$ = this.getProductData();
   }
 
+  getProdutDatas(): Observable<ListBuyerProduct> {
+    return this.ocMeService
+      .ListProducts()
+      .pipe(tap((productList) => (this.facets = productList.Meta.Facets)));
+
+  }
   getProductData(): Observable<ListBuyerProduct> {
     return this.activatedRoute.queryParams.pipe(
       tap((queryParams) => {
@@ -92,12 +101,12 @@ export class ProductListComponent implements OnInit {
         this.searchTerm = queryParams.search || null;
       }),
       flatMap((queryParams) => {
-       // console.log(queryParams.page)
+        // console.log(queryParams.page)
         return this.ocMeService
           .ListProducts({
             categoryID: queryParams.category,
             page: queryParams.page,
-            pageSize:this.size,
+            pageSize: this.size,
             search: queryParams.search,
             sortBy: queryParams.sortBy,
             filters: {
@@ -241,7 +250,7 @@ export class ProductListComponent implements OnInit {
 
   addToCart(event: AddToCartEvent) {
     this.cartService
-      .addToCart(event.product.ID, event.quantity,event.product.xp.MaxQuantityLimit)
+      .addToCart(event.product.ID, event.quantity, event.product.xp.MaxQuantityLimit)
       .subscribe(() => this.appStateService.addToCartSubject.next(event));
   }
 
